@@ -96,6 +96,9 @@ function updateElement(element, value) {
 
 function assignVariables(parentElement) {
     parentElement.$ || (parentElement.$ = {});
+    if(parentElement.attributes['var']) {
+        parentElement.$[parentElement.attributes['var'].value] = parentElement;
+    }
     parentElement.querySelectorAll('[var]').forEach((element) => {
         parentElement.$[element.attributes['var'].value] = element;
     });
@@ -107,7 +110,11 @@ function generateDOM(html) {
     var parent = document.createElement('div');
     parent.innerHTML = html;
 
-    return parent.firstElementChild;
+    if(parent.childElementCount == 1) {
+        return parent.firstElementChild;
+    }
+
+    return parent;
 }
 
 function clone(obj) {
