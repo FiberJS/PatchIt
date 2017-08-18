@@ -12,7 +12,7 @@ class PatchTemplate {
 
     render(state) {
         const view = this.html.cloneNode(true);
-        assignVariables(view);
+        PatchIt.assignVariables(view);
 
         const viewPatch = new ViewPatch(view, this.patch);
         view.apply = (state) => viewPatch.apply(state);
@@ -94,7 +94,7 @@ function updateElement(element, value) {
     setProperty('value') || setProperty('textContent');
 }
 
-function assignVariables(parentElement) {
+PatchIt.assignVariables =  parentElement => {
     parentElement.$ || (parentElement.$ = {});
     if(parentElement.attributes['var']) {
         parentElement.$[parentElement.attributes['var'].value] = parentElement;
@@ -104,7 +104,7 @@ function assignVariables(parentElement) {
     });
 
     return parentElement;
-}
+};
 
 function generateDOM(html) {
     var parent = document.createElement('div');
